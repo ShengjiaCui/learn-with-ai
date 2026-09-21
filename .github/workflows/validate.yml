@@ -19,4 +19,4 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - run: skills-ref validate skills/learn-with-ai
       - run: python scripts/package.py
-      - run: python scripts/validate.py --archive dist/learn-with-ai-v1.0.0.zip
+      - run: python scripts/validate.py --built

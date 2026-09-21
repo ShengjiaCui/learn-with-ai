@@ -13,7 +13,8 @@ from skills_ref import read_properties, validate
 EXPECTED = {
     "SKILL.md", "LICENSE", "agents/openai.yaml",
     "references/ten-step-workflow.md", "references/practice-and-resume.md",
-    "references/evidence-review.md", "assets/learning-record.md",
+    "references/evidence-review.md", "references/worked-example.md",
+    "assets/learning-record.md",
 }
 
 
@@ -56,7 +57,7 @@ def validate_archive(archive, skill):
     with zipfile.ZipFile(archive) as z:
         names = z.namelist()
         require(len(names) == len(set(names)), "Duplicate archive entries")
-        require(set(names) == expected, "Archive must contain only one skill folder and its seven files")
+        require(set(names) == expected, "Archive must contain only one skill folder and exactly the expected files")
         for name in names:
             part = PurePosixPath(name)
             require(not part.is_absolute() and ".." not in part.parts, "Unsafe archive path")
@@ -72,14 +73,22 @@ def validate_archive(archive, skill):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--archive", type=Path)
+    parser.add_argument("--archive", type=Path, help="release ZIP to check")
+    parser.add_argument("--built", action="store_true",
+                        help="check dist/learn-with-ai-v<version>.zip as built by package.py")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     skill = root / "skills" / "learn-with-ai"
     validate_skill(skill)
     require((root / "LICENSE").read_bytes() == (skill / "LICENSE").read_bytes(), "License files differ")
-    if args.archive:
-        validate_archive(args.archive, skill)
+    archive = args.archive
+    if args.built:
+        require(archive is None, "Use either --archive or --built")
+        version = read_properties(skill).metadata["version"]
+        archive = root / "dist" / f"learn-with-ai-v{version}.zip"
+        require(archive.is_file(), f"Run scripts/package.py first: {archive.name} not found")
+    if archive:
+        validate_archive(archive, skill)
 
 
 if __name__ == "__main__":

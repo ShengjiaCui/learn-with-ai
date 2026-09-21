@@ -26,7 +26,7 @@ mkdir -p ~/.claude/skills
 cp -R skills/learn-with-ai ~/.claude/skills/
 ```
 
-新建会话，使用 `/learn-with-ai`，或说“使用 learn-with-ai 带我学习……”。项目级安装可改为项目内的 `.claude/skills/`。依据：[Claude Code Skills 文档](https://code.claude.com/docs/en/skills)。
+新建会话，使用 `/learn-with-ai`，或说“使用 learn-with-ai 带我学习……”。从旧版本升级时整目录替换，然后新开会话：Claude Code 会在会话内缓存已加载的 Skill 正文，替换文件的当轮调用仍可能拿到旧内容。项目级安装可改为项目内的 `.claude/skills/`。依据：[Claude Code Skills 文档](https://code.claude.com/docs/en/skills)。
 
 ### Codex 与支持共享技能目录的 Agent
 
@@ -48,7 +48,7 @@ gemini skills list
 
 ### Claude 网页端 / 桌面端
 
-在 [Releases](https://github.com/ShengjiaCui/learn-with-ai/releases) 下载 **`learn-with-ai-v1.0.0.zip`**，按 [Claude 官方上传说明](https://support.claude.com/en/articles/12512180-use-skills-in-claude) 在技能设置中上传。是否可用取决于账户和组织设置。
+在 [Releases](https://github.com/ShengjiaCui/learn-with-ai/releases) 下载最新版本附带的 **`learn-with-ai-v<版本号>.zip`**，按 [Claude 官方上传说明](https://support.claude.com/en/articles/12512180-use-skills-in-claude) 在技能设置中上传。是否可用取决于账户和组织设置。
 
 请选择发布附件中的专用 ZIP；GitHub 自动生成的 “Source code (zip)” 是仓库源码，目录结构不同。专用 ZIP 的顶层只有 `learn-with-ai/`，其下直接是 `SKILL.md` 与资源。
 
@@ -99,9 +99,12 @@ skills/learn-with-ai/
 ├── references/
 │   ├── ten-step-workflow.md
 │   ├── practice-and-resume.md
-│   └── evidence-review.md
+│   ├── evidence-review.md
+│   └── worked-example.md
 └── assets/learning-record.md
 ```
+
+`worked-example.md` 是一段从出题、答错、提示到留下记录的合成示范，供 Agent 在不确定一轮练习该怎么进行时参照。`learning-record.md` 开头的“最小接续记录”用于单轮学习或只在聊天里交付的场合，完整模板留给跨多次的持续跟进。
 
 仓库根目录的开发脚本、验证说明和 CI 不会装入技能包。学习记录由使用者保存在自己指定的位置，不应提交到本仓库。
 
@@ -115,10 +118,10 @@ source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 skills-ref validate skills/learn-with-ai
 python scripts/package.py
-python scripts/validate.py --archive dist/learn-with-ai-v1.0.0.zip
+python scripts/validate.py --built
 ```
 
-`skills-ref` 是规范维护方的参考校验器，依赖固定到一个已审查的提交。打包脚本生成 ZIP 和 SHA-256 校验文件；CI 会校验格式、资源链接、许可一致性及压缩包内容。Windows 可使用 `.venv\Scripts\Activate.ps1` 激活环境，其余 Python 命令相同。
+`--built` 按 `SKILL.md` 中的版本号检查 `dist/` 下刚打出的 ZIP，发版时只需改一处版本号；也可以用 `--archive <路径>` 检查任意一个已下载的发布包。`skills-ref` 是规范维护方的参考校验器，依赖固定到一个已审查的提交。打包脚本生成 ZIP 和 SHA-256 校验文件；CI 会校验格式、资源链接、许可一致性及压缩包内容。Windows 可使用 `.venv\Scripts\Activate.ps1` 激活环境，其余 Python 命令相同。
 
 ## 来源与许可
 
