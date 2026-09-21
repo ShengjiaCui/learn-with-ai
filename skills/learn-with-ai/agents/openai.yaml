@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 学习实践"
+  short_description: "按十步框架对齐学习目标与验收，记录作答和复测证据，支持暂停后继续"
+  default_prompt: "使用 $learn-with-ai 围绕我需要独立完成的任务，按十步框架研究、练习和复盘，保留可供下次继续的学习证据。"
