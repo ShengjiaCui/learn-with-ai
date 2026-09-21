@@ -81,10 +81,12 @@ def main():
     skill = root / "skills" / "learn-with-ai"
     validate_skill(skill)
     require((root / "LICENSE").read_bytes() == (skill / "LICENSE").read_bytes(), "License files differ")
+    version = read_properties(skill).metadata["version"]
+    changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    require(f"\n## [{version}] - " in changelog, f"CHANGELOG.md has no entry for {version}")
     archive = args.archive
     if args.built:
         require(archive is None, "Use either --archive or --built")
-        version = read_properties(skill).metadata["version"]
         archive = root / "dist" / f"learn-with-ai-v{version}.zip"
         require(archive.is_file(), f"Run scripts/package.py first: {archive.name} not found")
     if archive:

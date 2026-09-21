@@ -12,7 +12,7 @@
 | 本地引用 | 所有相对资源链接可解析，未越出技能目录 |
 | 安装包 | 单个 `learn-with-ai/` 根目录、八个文件（1.1.0 新增 `references/worked-example.md`），含许可证，无本机绝对路径或符号链接 |
 | ZIP 验证 | 解压后再次运行参考校验；与源目录逐文件字节一致，SHA-256 校验通过 |
-| 校验器反向用例 | 三种应被拒绝的情形均被拒绝：同时传 `--archive` 与 `--built`；用 1.0.0 的 ZIP 对照 1.1.0 源目录；技能目录中出现清单外文件。仓库没有自动化测试套件，这三项是手工执行的 |
+| 校验器反向用例 | 四种应被拒绝的情形均被拒绝：同时传 `--archive` 与 `--built`；用 1.0.0 的 ZIP 对照 1.1.0 源目录；技能目录中出现清单外文件；`CHANGELOG.md` 缺少当前版本的条目。仓库没有自动化测试套件，这四项是手工执行的 |
 
 规范依据：[Agent Skills](https://agentskills.io/specification)、[Anthropic Skills](https://github.com/anthropics/skills)、[Claude 自定义 Skill](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)。`skills-ref` 是规范方提供的参考校验实现，不是产品认证。
 
