@@ -123,6 +123,8 @@ python scripts/validate.py --built
 
 `--built` 按 `SKILL.md` 中的版本号检查 `dist/` 下刚打出的 ZIP，发版时只需改一处版本号；也可以用 `--archive <路径>` 检查任意一个已下载的发布包。`skills-ref` 是规范维护方的参考校验器，依赖固定到一个已审查的提交。打包脚本生成 ZIP 和 SHA-256 校验文件；CI 会校验格式、资源链接、许可一致性及压缩包内容。Windows 可使用 `.venv\Scripts\Activate.ps1` 激活环境，其余 Python 命令相同。
 
+各版本的变化见 [CHANGELOG.md](CHANGELOG.md)。版本号以 `SKILL.md` 的 `metadata.version` 为准，校验脚本会检查更新日志里有对应条目。
+
 ## 来源与许可
 
 框架受到爱AI的大刘《用Claude、Codex、Workbuddy 10倍速学习任何知识（轻科技）》启发，[原书入口](https://weread.qq.com/web/reader/552323d0813abbc5cg01570e)。本仓库提供原创实践指令与模板，不包含原书全文、截图或付费笔记；来源归属在 Skill 内保留。
